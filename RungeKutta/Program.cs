@@ -41,10 +41,10 @@ namespace RungeKutta
                 {
                     var h = time[i + 1] - time[i];
                     var k1 = new DoubleVector(func(y[i], time[i], paramList));
-                    var k2 = new DoubleVector(func(y[i] + ((k1 * h) / 2.0), time[i] + (h / 2.0), paramList));
-                    var k3 = new DoubleVector(func(y[i] + ((k2 * h) / 2.0), time[i] + (h / 2.0), paramList));
-                    var k4 = new DoubleVector(func(y[i] + (k3 * h), time[i] + h, paramList));
-                    y[i + 1] = y[i] + ((k1 + (k2 * 2)) + ((k3 * 2) + k4)) * (h / 6.0);
+                    var k2 = new DoubleVector(func(y[i] + k1 * h / 2.0, time[i] + h / 2.0, paramList));
+                    var k3 = new DoubleVector(func(y[i] + k2 * h / 2.0, time[i] + h / 2.0, paramList));
+                    var k4 = new DoubleVector(func(y[i] + k3 * h, time[i] + h, paramList));
+                    y[i + 1] = y[i] + (k1 + k2*2 + k3*2 + k4) * (h/6.0);
                 }
 
                 return y.Select(x => (IList<double>)x).ToList();
