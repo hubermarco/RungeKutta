@@ -18,7 +18,6 @@ namespace RungeKutta
 
             DoubleVector model(DoubleVector state, double time, params object[] paramList)
             {
-                var deltaState = new List<double>();
                 var y = state[0];
                 var v = state[1];
 
