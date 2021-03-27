@@ -61,7 +61,7 @@ namespace RungeKutta
 
             Func<double, double> f = time => time < 0 ? 0 : 1;
 
-            var y_rungekutta = rungekutta4(model, new DoubleVector(0, 0), t, a, b, f);
+            var y_rungekutta = rungekutta4(model, new List<double> { 0, 0 }, t, a, b, f);
         }
     }
 }
