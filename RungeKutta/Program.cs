@@ -61,7 +61,7 @@ namespace RungeKutta
             var a = 2 * D;
             var b = Math.Pow(w0, 2);
 
-            Func<double, double> f = time  => time < 0 ? 0 : 1;
+            Func<double, double> f = time => time < 0 ? 0 : 1;
 
             var y_rungekutta = rungekutta4(model, new DoubleVector(new List<double> { 0, 0 }), t, a, b, f);
         }
