@@ -14,7 +14,7 @@ namespace RungeKutta
             IList<double> arange(double start, double end, double step) =>
                 Enumerable.Range(0, (int)Math.Round((end - start) / step)).Select(x => start + x * step).ToList();
 
-            DoubleVector model(DoubleVector state, double time, params object[] paramList)
+            IList<double> model(IList<double> state, double time, params object[] paramList)
             {
                 var y = state[0];
                 var v = state[1];
@@ -26,28 +26,28 @@ namespace RungeKutta
                 var dydt = v;
                 var dvdt = -bPar * y - aPar * v + func(time);
 
-                return new DoubleVector(dydt, dvdt);
+                return new List<double> { dydt, dvdt };
             }
 
-            IList<DoubleVector> rungekutta4(Func<DoubleVector, double, object[], DoubleVector> func, DoubleVector y0, IList<double> time, params object[] paramList)
+            IList<IList<double>> rungekutta4(Func<IList<double>, double, object[], IList<double>> func, IList<double> y0, IList<double> time, params object[] paramList)
             {
                 var n = time.Count;
                 var y = Enumerable.Repeat(0, n).Select(
                     x => new DoubleVector(Enumerable.Repeat(0.0, y0.Count).ToList())).ToList();
 
-                y[0] = y0;
+                y[0] = new DoubleVector(y0);
 
                 for(var i = 0; i < n -1; i++)
                 {
                     var h = time[i + 1] - time[i];
-                    var k1 = func(y[i], time[i], paramList);
-                    var k2 = func(y[i] + ((k1 * h) / 2.0), time[i] + (h / 2.0), paramList);
-                    var k3 = func(y[i] + ((k2 * h) / 2.0), time[i] + (h / 2.0), paramList);
-                    var k4 = func(y[i] + (k3 * h), time[i] + h, paramList);
+                    var k1 = new DoubleVector(func(y[i], time[i], paramList));
+                    var k2 = new DoubleVector(func(y[i] + ((k1 * h) / 2.0), time[i] + (h / 2.0), paramList));
+                    var k3 = new DoubleVector(func(y[i] + ((k2 * h) / 2.0), time[i] + (h / 2.0), paramList));
+                    var k4 = new DoubleVector(func(y[i] + (k3 * h), time[i] + h, paramList));
                     y[i + 1] = y[i] + ((k1 + (k2 * 2)) + ((k3 * 2) + k4)) * (h / 6.0);
                 }
 
-                return y;
+                return y.Select(x => (IList<double>)x).ToList();
             }
 
             var T0 = 0.01; // in seconds
