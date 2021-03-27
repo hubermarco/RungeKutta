@@ -11,10 +11,8 @@ namespace RungeKutta
             IList<double> linspace(double start, double end, int count) =>
                 Enumerable.Range(0, count).Select(x => start + x * (end - start) / count).ToList();
 
-            IList<double> arange(double start, double end, double step)
-            {
-                return Enumerable.Range(0, (int)Math.Round((end - start) / step)).Select(x => start + x * step).ToList();
-            }
+            IList<double> arange(double start, double end, double step) =>
+                Enumerable.Range(0, (int)Math.Round((end - start) / step)).Select(x => start + x * step).ToList();
 
             DoubleVector model(DoubleVector state, double time, params object[] paramList)
             {
@@ -28,7 +26,7 @@ namespace RungeKutta
                 var dydt = v;
                 var dvdt = -bPar * y - aPar * v + func(time);
 
-                return new DoubleVector(new List<double> { dydt, dvdt });
+                return new DoubleVector(dydt, dvdt);
             }
 
             IList<DoubleVector> rungekutta4(Func<DoubleVector, double, object[], DoubleVector> func, DoubleVector y0, IList<double> time, params object[] paramList)
@@ -63,7 +61,7 @@ namespace RungeKutta
 
             Func<double, double> f = time => time < 0 ? 0 : 1;
 
-            var y_rungekutta = rungekutta4(model, new DoubleVector(new List<double> { 0, 0 }), t, a, b, f);
+            var y_rungekutta = rungekutta4(model, new DoubleVector(0, 0), t, a, b, f);
         }
     }
 }

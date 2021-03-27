@@ -10,6 +10,11 @@ namespace RungeKutta
             AddRange(list);
         }
 
+        public DoubleVector(params double[] paramList)
+        {
+            AddRange(paramList);
+        }
+
         public static DoubleVector operator +(DoubleVector a, DoubleVector b)
             => new DoubleVector(a.Select((value, index) => value + b[index]).ToList());
 
