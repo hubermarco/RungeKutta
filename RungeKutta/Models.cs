@@ -31,12 +31,12 @@ namespace RungeKutta
             var y = state[0];
             var v = state[1];
 
-            var aPar = (double)paramList[0];
-            var bPar = (double)paramList[1];
+            var a = (double)paramList[0];
+            var b = (double)paramList[1];
             var func = (Func<double, double>)paramList[2];
 
             var dydt = v;
-            var dvdt = -bPar * y - aPar * v + func(time);
+            var dvdt = -b * y - a * v + func(time);
 
             return new List<double> { dydt, dvdt };
         }
