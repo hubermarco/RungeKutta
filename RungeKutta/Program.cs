@@ -22,17 +22,19 @@ namespace RungeKutta
 
             Func<double, double> inputFunction = InputFunctions.Step;
 
-            var y_rungekutta = RungeKutta4.Apply(Models.HarmonicOsziallator, new List<double> { 0, 0 }, t, a, b, inputFunction);
+            var y_rungekutta = RungeKutta4.Apply(
+                Models.HarmonicOsziallator, 
+                new List<double> { 0, 0 }, t, a, b, inputFunction);
 
+            var u = t.Select(time => inputFunction(time)).ToList();
             var y = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
 
-           
             CurveChartImageApi.Create(
                 fileNameWithoutExtention:"RungeKutta",
                 headerCaption: "HarmonicOsziallor",
-                xGrid1: null,
+                xGrid1: t,
                 xGrid2: t,
-                curveList1:null,
+                curveList1: new List<IList<double>> { u },
                 curveList2: new List<IList<double>> { y },
                 outputDir:"RungeKutta",
                 linearFreqAxis:true
@@ -40,9 +42,6 @@ namespace RungeKutta
 
             CloseInternetExplorer();
             StartInternetExplorerwithPngFile("RungeKutta", "RungeKutta");
-
-            Console.Write("Press any key");
-            Console.ReadKey(true);
         }
 
 
