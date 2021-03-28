@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CurveChartImageCreator;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace RungeKutta
@@ -20,6 +23,45 @@ namespace RungeKutta
             Func<double, double> inputFunction = InputFunctions.Step;
 
             var y_rungekutta = RungeKutta4.Apply(Models.HarmonicOsziallator, new List<double> { 0, 0 }, t, a, b, inputFunction);
+
+            var y = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
+
+           
+            CurveChartImageApi.Create(
+                fileNameWithoutExtention:"RungeKutta",
+                headerCaption: "HarmonicOsziallor",
+                xGrid1: null,
+                xGrid2: t,
+                curveList1:null,
+                curveList2: new List<IList<double>> { y },
+                outputDir:"RungeKutta",
+                linearFreqAxis:true
+                );
+
+            CloseInternetExplorer();
+            StartInternetExplorerwithPngFile("RungeKutta", "RungeKutta");
+
+            Console.Write("Press any key");
+            Console.ReadKey(true);
+        }
+
+
+        private static void StartInternetExplorerwithPngFile(string outputFolderName, string fileNameWithoutExtention)
+        {
+            var currentDirectory = Environment.CurrentDirectory;
+            var outputDir = Path.Combine(currentDirectory, outputFolderName);
+            var filePath = Path.Combine(outputDir, fileNameWithoutExtention + ".png");
+            Process.Start("IExplore.exe", filePath);
+        }
+
+        private static void CloseInternetExplorer()
+        {
+            Process[] ps = Process.GetProcessesByName("IEXPLORE");
+
+            foreach (Process p in ps)
+            {
+                p.Kill();
+            }
         }
     }
 }
