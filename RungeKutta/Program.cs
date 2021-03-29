@@ -23,33 +23,36 @@ namespace RungeKutta
 
             Func<double, double> inputFunction = InputFunctions.Step;
 
+            var u = t.Select(time => inputFunction(time)).ToList();
+
             var y_rungekutta = RungeKutta4.Apply(
                 Models.HarmonicOsziallator,
                 new List<double> { 0, 0 }, t, a, b, inputFunction);
 
-            var u = t.Select(time => inputFunction(time)).ToList();
             var y_rk = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
 
             var y_analytical = t.Select(
                 time => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
                 0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time)).ToList();
 
-            var delta_in_10_power_minus_10 = y_rk.Select((value_rk, index) => (value_rk - y_analytical[index]) * Math.Pow(10, 10)).ToList();
-            var y_rk_display = y_rk.Select(value => value * 10).ToList();
-            var u_display = u.Select(value => value * 10).ToList();
+            var delta = y_rk.Select((value_rk, index) => (value_rk - y_analytical[index])).ToList();
 
-            DisplayResults(t, u_display, y_rk_display, delta_in_10_power_minus_10);
+            DisplayResults(t, u, y_rk, delta);
         }
 
-        private static void DisplayResults(IList<double> t, List<double> u, IList<double> y_rk, List<double> delta_in_10_power_minus_10)
+        private static void DisplayResults(IList<double> t, List<double> u, IList<double> y_rk, List<double> delta)
         {
+            var y_rk_display = y_rk.Select(value => value * 10).ToList();
+            var u_display = u.Select(value => value * 10).ToList();
+            var delta_in_10_power_minus_10 = delta.Select(value => value * Math.Pow(10,10)).ToList();
+
             CurveChartImageApi.Create(
                             fileNameWithoutExtention: "RungeKutta",
                             headerCaption: "HarmonicOsziallor Input and Output in 10^(-1)",
                             xGrid1: t,
                             xGrid2: t,
-                            curveList1: new List<IList<double>> { u },
-                            curveList2: new List<IList<double>> { y_rk },
+                            curveList1: new List<IList<double>> { u_display },
+                            curveList2: new List<IList<double>> { y_rk_display },
                             outputDir: "RungeKutta",
                             linearFreqAxis: true
                             );
