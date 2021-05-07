@@ -93,8 +93,8 @@ namespace CurveChartImageCreator
             ref double dYMax
             )
         {
-            dXMin = 0;
-            dXMax = 0;
+            dXMin = ( AreCurvesAvailable(targetCurves) || AreCurvesAvailable(simCurves) ) ? 0 : 1;
+            dXMax = ( AreCurvesAvailable(targetCurves) || AreCurvesAvailable(simCurves) ) ? 0 : 10; 
             dYMin = 0;
             dYMax = 0;
 
