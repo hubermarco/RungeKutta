@@ -58,17 +58,23 @@ namespace CurveChartImageCreator
             {
                 if (LastError != null) LastError += "\n";
                 LastError += exc.Message;
-                if (exc.InnerException != null) LastError += exc.InnerException.Message;
+                if (exc.InnerException != null)
+                    LastError += exc.InnerException.Message;
+                throw new Exception(LastError);
             }
         }
 
         private static void CalculateXScaleAndYScale(double dWidth, double dHeight, double dBorder, double dXMax,
             double dXMin, double dYMax, double dYMin, ref double dXScale, ref double dYScale)
         {
-            dXScale = (dWidth - 2.0 * dBorder) / Math.Log10(dXMax / dXMin);   //logarithmic x axis
             if (LinearFreqAxis)
-            {
                 dXScale = (dWidth - 2.0 * dBorder) / (dXMax - dXMin);   //linear x axis
+            else
+            {
+                if (Math.Abs(dXMin) < Math.Pow(10, -15))
+                    throw new ArgumentException("Minimum x value must be greater than 0 for a logarithmic x axis");
+
+                dXScale = (dWidth - 2.0 * dBorder) / Math.Log10(dXMax / dXMin);   //logarithmic x axis
             }
 
             // Set deltaY to 10 if (dYMax - dYMin) is 0 in order to avoid an exception
