@@ -6,7 +6,7 @@ namespace RungeKutta
     public class Models
     {
         // ***************************************
-        // Model of a harmonic oszillator
+        // Model of a harmonic oscillator
         // ***************************************
         // y'' + a*y' + b*y = u(t)
         // y' = v
