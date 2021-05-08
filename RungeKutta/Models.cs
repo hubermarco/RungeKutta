@@ -26,7 +26,7 @@ namespace RungeKutta
         // X' = [0,1;-b,-a]*[y;v]+[0;1]*u(t)
         // y(t)= X*[1;0]
         // A = [0,1;-b,-a]   B=[0;1]   C=[1;0]   D=[0;0]
-        public static IList<double> HarmonicOsziallator(IList<double> state, double time, object[] paramList)
+        public static IList<double> HarmonicOscillator(IList<double> state, double time, object[] paramList)
         {
             var y = state[0];
             var v = state[1];
