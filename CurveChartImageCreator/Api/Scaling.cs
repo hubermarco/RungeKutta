@@ -87,7 +87,7 @@ namespace CurveChartImageCreater
             var range = ( (curve == null) || (curve.Count == 0)) ? 0 : curve.Max() - curve.Min();
             var usedRange = (range != 0) ? range : 1;
             var exponent = Math.Log10(Math.Abs(usedRange));
-            var roundedExponent = exponent < 0 ? (int)Math.Floor(exponent) : (int)Math.Floor(exponent);
+            var roundedExponent = (int)Math.Floor(exponent);
             return roundedExponent;
         }
 
