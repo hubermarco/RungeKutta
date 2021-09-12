@@ -1,4 +1,5 @@
-﻿using CurveChartImageCreator;
+﻿using CurveChartImageCreater;
+using CurveChartImageCreator;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,13 +43,25 @@ namespace RungeKutta
 
         private static void DisplayResults(IList<double> t, List<double> u, IList<double> y_rk, List<double> delta)
         {
-            var y_rk_display = y_rk.Select(value => value * 10).ToList();
-            var u_display = u.Select(value => value * 10).ToList();
-            var delta_in_10_power_minus_10 = delta.Select(value => value * Math.Pow(10,10)).ToList();
+            Scaling.ApplyWithOutput(
+                curve1: y_rk,
+                curve2: u,
+                maxExponent: 1,
+                minExponent: 1,
+                curveOutput1: out var y_rk_display,
+                curveOutput2: out var u_display,
+                scalingExponent: out var scalingExponent);
+
+            Scaling.ApplyWithOutput(
+                curve: delta,
+                minExponent: 1,
+                maxExponent: 1,
+                curveOutput: out var delta_in_10_power_minus_10,
+                scalingExponent: out var scalingExponentDelta);
 
             CurveChartImageApi.Create(
                             fileNameWithoutExtention: "RungeKutta",
-                            headerCaption: "HarmonicOsziallor Input and Output in 10^(-1)",
+                            headerCaption: $"HarmonicOsziallor Input and Output in 10^({scalingExponent})",
                             xGrid1: t,
                             xGrid2: t,
                             curveList1: new List<IList<double>> { u_display },
@@ -59,7 +72,7 @@ namespace RungeKutta
 
             CurveChartImageApi.Create(
                 fileNameWithoutExtention: "RungeKutta_Delta",
-                headerCaption: "HarmonicOsziallor delta to analytical solution in 10^(-10)",
+                headerCaption: $"HarmonicOsziallor delta to analytical solution in 10^({scalingExponentDelta})",
                 xGrid1: null,
                 xGrid2: t,
                 curveList1: null,
