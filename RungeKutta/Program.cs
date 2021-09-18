@@ -31,9 +31,10 @@ namespace RungeKutta
 
             var y_rk = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
 
-            var y_analytical = t.Select(
-                time => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
-                0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time)).ToList();
+            double y_step_analytical(double time) => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
+                0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time);
+
+            var y_analytical = t.Select(y_step_analytical).ToList();
 
             var delta = y_rk.Select((value_rk, index) => (value_rk - y_analytical[index])).ToList();
 
