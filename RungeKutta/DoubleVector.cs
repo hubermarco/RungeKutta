@@ -21,6 +21,9 @@ namespace RungeKutta
         public static DoubleVector operator *(DoubleVector a, double b)
             => new DoubleVector(a.Select((value, index) => value * b).ToList());
 
+        public static DoubleVector operator *(double a, DoubleVector b)
+            => new DoubleVector(b.Select((value, index) => value * a).ToList());
+
         public static DoubleVector operator /(DoubleVector a, double b)
             => new DoubleVector(a.Select((value, index) => value / b).ToList());
     }
