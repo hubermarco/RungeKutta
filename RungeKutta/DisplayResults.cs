@@ -28,15 +28,15 @@ namespace RungeKutta
                 scalingExponent: out var scalingExponentDelta);
 
             CurveChartImageApi.Create(
-                            fileNameWithoutExtention: "RungeKutta",
-                            headerCaption: $"HarmonicOsziallor Input and Output in 10^({scalingExponent})",
-                            xGrid1: t,
-                            xGrid2: t,
-                            curveList1: new List<IList<double>> { u_display },
-                            curveList2: new List<IList<double>> { y_rk_display },
-                            outputDir: "RungeKutta",
-                            linearFreqAxis: true
-                            );
+                fileNameWithoutExtention: "RungeKutta",
+                headerCaption: $"HarmonicOsziallor Input and Output in 10^({scalingExponent})",
+                xGrid1: t,
+                xGrid2: t,
+                curveList1: new List<IList<double>> { u_display },
+                curveList2: new List<IList<double>> { y_rk_display },
+                outputDir: "RungeKutta",
+                linearFreqAxis: true
+                );
 
             CurveChartImageApi.Create(
                 fileNameWithoutExtention: "RungeKutta_Delta",
