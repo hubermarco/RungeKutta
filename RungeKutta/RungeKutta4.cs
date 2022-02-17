@@ -21,7 +21,7 @@ namespace RungeKutta
                 var k2 = new DoubleVector(func(y[i] + k1 * h / 2.0, t[i] + h / 2.0, paramList));
                 var k3 = new DoubleVector(func(y[i] + k2 * h / 2.0, t[i] + h / 2.0, paramList));
                 var k4 = new DoubleVector(func(y[i] + k3 * h, t[i] + h, paramList));
-                y[i + 1] = y[i] + (h / 6.0) * (k1 + k2 * 2 + k3 * 2 + k4);
+                y[i + 1] = y[i] + (h / 6.0) * (k1 + 2*k2 + 2*k3 + k4);
             }
 
             return y.Select(x => (IList<double>)x).ToList();

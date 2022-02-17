@@ -19,12 +19,12 @@ namespace RungeKutta
             => new DoubleVector(a.Select((value, index) => value + b[index]).ToList());
 
         public static DoubleVector operator *(DoubleVector a, double b)
-            => new DoubleVector(a.Select((value, index) => value * b).ToList());
+            => new DoubleVector(a.Select(value => value * b).ToList());
 
         public static DoubleVector operator *(double a, DoubleVector b)
-            => new DoubleVector(b.Select((value, index) => value * a).ToList());
+            => new DoubleVector(b.Select(value => value * a).ToList());
 
         public static DoubleVector operator /(DoubleVector a, double b)
-            => new DoubleVector(a.Select((value, index) => value / b).ToList());
+            => new DoubleVector(a.Select(value => value / b).ToList());
     }
 }
