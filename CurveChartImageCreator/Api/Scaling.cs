@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CurveChartImageCreater
+namespace CurveChartImageCreator
 {
     public class Scaling
     {

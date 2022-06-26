@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\CurveChartImageApi.cs" />
+    <Compile Include="Api\ScaledCurveChartImageApi.cs" />
     <Compile Include="Api\Scaling.cs" />
     <Compile Include="Implementation\CurveTypeID.cs" />
     <Compile Include="Implementation\Deviation.cs" />

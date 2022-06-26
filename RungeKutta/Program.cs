@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MathNet.Numerics.IntegralTransforms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace RungeKutta
 {
@@ -27,14 +29,45 @@ namespace RungeKutta
 
             var y_rk = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
 
+            double y_impulse_analytical(double time) => 1.0327955589886 * Math.Exp(-time / 4) * Math.Sin(0.96824583655185 * time);
+
             double y_step_analytical(double time) => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
                 0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time);
 
-            var y_analytical = t.Select(y_step_analytical).ToList();
+            var y_impulse_analytical_curve = t.Select(y_impulse_analytical).ToList();
+            var y_step_analytical_curve = t.Select(y_step_analytical).ToList();
 
-            var delta = y_rk.Select((value_rk, index) => (value_rk - y_analytical[index])).ToList();
+            var delta = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
+
+            var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
+            Fourier.Forward(input, FourierOptions.NoScaling);
+            var output = input.Select(x => x.Magnitude * T0).ToArray();
+
+            FFT();
 
             DisplayResults.Apply(t, u, y_rk, delta);
+        }
+
+        private static void FFT()
+        {
+            var T = 1; // period duration in seconds
+            var fs = 100; // sample frequency in Hz
+            var ts = 1.0 / fs; // sample time in seconds
+
+            // discret time samples in seconds
+            var t_discrete = Np.Arange(0, T, ts);
+
+            var f = 2;
+
+            var xd = t_discrete.Select(t => Math.Sin(2 * Math.PI * f * t)).ToList();
+
+            var inputComplex = xd.Select(x => new Complex(x, 0)).ToArray();
+
+            var Xd = inputComplex.Select(x => x).ToArray();
+
+            Fourier.Forward(Xd, FourierOptions.NoScaling);
+
+            var Xd_Abs = Xd.Select(x => x.Magnitude * ts).ToArray();
         }
     }
 }
