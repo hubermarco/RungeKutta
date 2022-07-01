@@ -44,7 +44,7 @@ namespace RungeKutta
             var y_rk = y_rungekutta.Select(x => x[0]).ToList();
             var delta_step = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
-            // Impuse response (differentiate y_rk to calculate impulse response)
+            // Impulse response (differentiate y_rk to calculate impulse response)
             var y_rk_impulse = y_rk.Select((value, index) => (index == 0) ? 0 : (value - y_rk[index - 1]) / T0).ToList();
             var delta_impulse = y_rk_impulse.Select((value_rk, index) => (value_rk - y_impulse_analytical_curve[index])).ToList();
 
