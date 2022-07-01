@@ -7,7 +7,7 @@ namespace RungeKutta
     public class RungeKutta4
     {
         public static IList<IList<double>> Apply(
-            Func<IList<double>, double, object[], IList<double>> model, 
+            Func<IList<double>, double, object[], IList<double>> model, // INPUT: State, t, paramList, OUTPUT: dState/dt
             IList<double> y0, 
             IList<double> t, 
             params object[] paramList)
