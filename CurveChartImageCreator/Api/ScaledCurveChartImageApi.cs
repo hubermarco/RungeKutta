@@ -13,7 +13,9 @@ namespace CurveChartImageCreator
             IList<double> curve1,
             IList<double> curve2,
             string outputDirCurveChart,
-            bool linearFreqAxis)
+            bool linearFreqAxis,
+            uint imageWidth = 900,
+            uint imageHeight = 600)
         {
             IList<double> GetUsedGrid(bool linFreqAxis, IList<double> grid) =>
                 (!linFreqAxis && (grid?.Count > 0) && grid.Any(x => x <= 0)) ? null : grid;
@@ -47,8 +49,8 @@ namespace CurveChartImageCreator
                 curveList2: new List<IList<double>> { scaledCurve2 },
                 outputDir: outputDirCurveChart,
                 linearFreqAxis: linearFreqAxis,
-                imageWidth: 900,
-                imageHeight: 600);
+                imageWidth: imageWidth,
+                imageHeight: imageHeight);
         }
     }
 }

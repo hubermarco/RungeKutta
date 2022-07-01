@@ -8,36 +8,29 @@ namespace RungeKutta
 {
     public class DisplayResults
     {
-        public static void Apply(IList<double> t, List<double> u, IList<double> y_rk, List<double> delta)
+        public static void CreateCurveChartAndShowItWithInternetExplorer(
+            string outputDirCurveChart,
+            string fileNameWithoutExtention,
+            string headerCaption,
+            IList<double> grid1, 
+            IList<double> curve1,
+            IList<double> grid2,
+            IList<double> curve2,
+            bool linearFreqAxis)
         {
-            CloseInternetExplorer();
-
             ScaledCurveChartImageApi.Create(
-                fileNameWithoutExtention: "RungeKutta",
-                headerCaption: "HarmonicOsziallor Input and Output",
-                grid1: t,
-                grid2: t,
-                curve1: y_rk,
-                curve2: u,
-                outputDirCurveChart: "RungeKutta",
-                linearFreqAxis: true);
+                fileNameWithoutExtention: fileNameWithoutExtention,
+                headerCaption: headerCaption,
+                grid1: grid1,
+                grid2: grid2,
+                curve1: curve1,
+                curve2: curve2,
+                outputDirCurveChart: outputDirCurveChart,
+                linearFreqAxis: linearFreqAxis,
+                imageWidth: 600,
+                imageHeight: 450);
 
-            StartInternetExplorerwithPngFile("RungeKutta", "RungeKutta");
-
-            Console.Write("Press any key");
-            Console.ReadKey(true);
-
-            ScaledCurveChartImageApi.Create(
-                fileNameWithoutExtention: "RungeKutta_Delta",
-                headerCaption: "HarmonicOsziallor delta to analytical solution",
-                grid1: null,
-                grid2: t,
-                curve1: null,
-                curve2: delta,
-                outputDirCurveChart: "RungeKutta",
-                linearFreqAxis: true);
-
-            StartInternetExplorerwithPngFile("RungeKutta", "RungeKutta_Delta");
+            StartInternetExplorerwithPngFile(outputDirCurveChart, fileNameWithoutExtention);
 
             Console.Write("Press any key");
             Console.ReadKey(true);

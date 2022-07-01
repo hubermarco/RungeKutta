@@ -11,6 +11,7 @@ namespace RungeKutta
         static void Main(string[] args)
         {
             var T0 = 0.01; // in seconds
+            var f0 = 1 / T0;
             var Tend = 50; // in seconds
             var t = Np.Arange(0, Tend, T0);
 
@@ -39,13 +40,42 @@ namespace RungeKutta
 
             var delta = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
+            var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < x) && (index <= t.Count / 2))).ToList();
             var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
-            var output = input.Select(x => x.Magnitude * T0).ToArray();
+            var output = input.Select(x => x.Magnitude * T0).Where((x, index) => index <= input.Length / 2 - 1).ToList();
 
             FFT();
 
-            DisplayResults.Apply(t, u, y_rk, delta);
+            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
+                outputDirCurveChart: "RungeKutta",
+                fileNameWithoutExtention: "RungeKutta",
+                headerCaption: "HarmonicOsziallor Input and Output",
+                grid1: t,
+                grid2: t,
+                curve1: y_rk,
+                curve2: u,
+                linearFreqAxis: true);
+
+            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
+               outputDirCurveChart: "RungeKutta",
+               fileNameWithoutExtention: "RungeKutta_Delta",
+               headerCaption: "HarmonicOsziallor delta to analytical solution",
+               grid1: null,
+               grid2: t,
+               curve1: null,
+               curve2: delta,
+               linearFreqAxis: true);
+
+            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
+               outputDirCurveChart: "RungeKutta",
+               fileNameWithoutExtention: "FFT",
+               headerCaption: "HarmonicOsziallor FFT of output",
+               grid1: null,
+               grid2: freq,
+               curve1: null,
+               curve2: output,
+               linearFreqAxis: false);
         }
 
         private static void FFT()
