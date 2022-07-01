@@ -45,7 +45,7 @@ namespace RungeKutta
             var delta_step = y_rk_step.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
             // Impulse response (differentiate y_rk to calculate impulse response)
-            var y_rk_impulse = DiscreteCalculus.Differentiate(y_rk_step,T0);
+            var y_rk_impulse = DiscreteCalculus.Differentiate(y_rk_step, T0);
             var delta_impulse = y_rk_impulse.Select((value_rk, index) => (value_rk - y_impulse_analytical_curve[index])).ToList();
 
             var y_rk_step_integrated = DiscreteCalculus.Integrate(y_rk_impulse, T0);
