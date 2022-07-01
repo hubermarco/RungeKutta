@@ -27,7 +27,7 @@ namespace RungeKutta
 
             var y_rungekutta = RungeKutta4.Apply(
                 Models.HarmonicOscillator,
-                new List<double> { 0, 0 }, t, a, b, inputFunction);
+                y0: new List<double> { 0, 0 }, t, a, b, inputFunction);
 
             var y_rk = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
 
