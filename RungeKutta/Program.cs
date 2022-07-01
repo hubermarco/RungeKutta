@@ -32,13 +32,8 @@ namespace RungeKutta
 
             // ########################### Analytical Results #########################################################
 
-            double y_impulse_analytical(double time) => 1.0327955589886 * Math.Exp(-time / 4) * Math.Sin(0.96824583655185 * time);
-
-            double y_step_analytical(double time) => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
-                0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time);
-
-            var y_impulse_analytical_curve = t.Select(y_impulse_analytical).ToList();
-            var y_step_analytical_curve = t.Select(y_step_analytical).ToList();
+            var y_impulse_analytical_curve = t.Select(AnalyticalResults.y_impulse).ToList();
+            var y_step_analytical_curve = t.Select(AnalyticalResults.y_step).ToList();
 
             // ########################### Time Domain ###############################################################
 
