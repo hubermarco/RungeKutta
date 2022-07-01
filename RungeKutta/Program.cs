@@ -53,7 +53,7 @@ namespace RungeKutta
             // ########################### Frequency Domain #############################################################
 
             var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
-            var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
+            var input = y_rk_impulse.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
             var frequencyResponse = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
 
