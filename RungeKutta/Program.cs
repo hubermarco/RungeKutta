@@ -63,9 +63,11 @@ namespace RungeKutta
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
                outputDirCurveChart: "RungeKutta",
                fileNameWithoutExtention: "RungeKuttaImpulse",
-               headerCaption: "HarmonicOsziallor Output(Impulse)",
-               grid: t,
-               curve: y_rk_impulse,
+               headerCaption: "HarmonicOsziallor Impulse response (red=analytical, black=RungeKutta4)",
+               grid1: t,
+               grid2: t,
+               curve1: y_impulse_analytical_curve,
+               curve2: y_rk_impulse,
                linearFreqAxis: true);
 
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
