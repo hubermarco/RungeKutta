@@ -52,12 +52,14 @@
   <ItemGroup>
     <Compile Include="AnalyticalResults.cs" />
     <Compile Include="DoubleVector.cs" />
+    <Compile Include="FFT_test.cs" />
     <Compile Include="InputFunctions.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="Np.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RungeKutta4.cs" />
+    <Compile Include="ShowResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

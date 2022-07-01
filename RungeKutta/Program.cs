@@ -1,5 +1,4 @@
-﻿using CurveChartImageCreator;
-using MathNet.Numerics.IntegralTransforms;
+﻿using MathNet.Numerics.IntegralTransforms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,79 +53,22 @@ namespace RungeKutta
             var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
             var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
-            var output = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
+            var frequencyResponse = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
 
-            FFT();
+            FFT_test.FFT();
 
             // ########################### Display Results ##############################################################
 
-            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
-               outputDirCurveChart: "RungeKutta",
-               fileNameWithoutExtention: "RungeKuttaImpulse",
-               headerCaption: "HarmonicOsziallor Impulse response (red=analytical, black=RungeKutta4)",
-               grid1: t,
-               grid2: t,
-               curve1: y_impulse_analytical_curve,
-               curve2: y_rk_impulse,
-               linearFreqAxis: true);
-
-            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
-               outputDirCurveChart: "RungeKutta",
-               fileNameWithoutExtention: "RungeKutta_Delta_Impulse",
-               headerCaption: "HarmonicOsziallor delta to analytical solution (Impulse)",
-               grid: t,
-               curve: delta_impulse,
-               linearFreqAxis: true);
-
-            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
-                outputDirCurveChart: "RungeKutta",
-                fileNameWithoutExtention: "RungeKuttaStep",
-                headerCaption: "HarmonicOsziallor Input(Step) and Output",
-                grid1: t,
-                grid2: t,
-                curve1: y_rk,
-                curve2: u,
-                linearFreqAxis: true);
-
-            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
-               outputDirCurveChart: "RungeKutta",
-               fileNameWithoutExtention: "RungeKutta_Delta_Step",
-               headerCaption: "HarmonicOsziallor delta to analytical solution (Step)",
-               grid: t,
-               curve: delta_step,
-               linearFreqAxis: true);
-
-            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
-               outputDirCurveChart: "RungeKutta",
-               fileNameWithoutExtention: "FFT",
-               headerCaption: "HarmonicOsziallor FFT of output",
-               grid: freq,
-               curve: output,
-               linearFreqAxis: false);
-
-            DisplayResults.CloseInternetExplorer();
-        }
-
-        private static void FFT()
-        {
-            var T = 1; // period duration in seconds
-            var fs = 100; // sample frequency in Hz
-            var ts = 1.0 / fs; // sample time in seconds
-
-            // discret time samples in seconds
-            var t_discrete = Np.Arange(0, T, ts);
-
-            var f = 2;
-
-            var xd = t_discrete.Select(t => Math.Sin(2 * Math.PI * f * t)).ToList();
-
-            var inputComplex = xd.Select(x => new Complex(x, 0)).ToArray();
-
-            var Xd = inputComplex.Select(x => x).ToArray();
-
-            Fourier.Forward(Xd, FourierOptions.NoScaling);
-
-            var Xd_Abs = Xd.Select(x => x.Magnitude * ts).ToArray();
+            ShowResults.Apply(
+                t, 
+                y_impulse_analytical_curve, 
+                y_rk_impulse, 
+                delta_impulse, 
+                y_rk, 
+                u, 
+                delta_step, 
+                freq, 
+                frequencyResponse);
         }
     }
 }
