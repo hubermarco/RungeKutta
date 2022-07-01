@@ -41,10 +41,13 @@ namespace RungeKutta
                 Models.HarmonicOscillator,
                 y0: new List<double> { 0, 0 }, t, a, b, inputFunction);
 
+            // Step response
             var y_rk = y_rungekutta.Select(x => x[0]).ToList();
+            var delta_step = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
-           
-            var delta = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
+            // Impuse response (differentiate y_rk to calculate impulse response)
+            var y_rk_impulse = y_rk.Select((value, index) => (index == 0) ? 0 : (value - y_rk[index - 1]) / T0).ToList();
+            var delta_impulse = y_rk_impulse.Select((value_rk, index) => (value_rk - y_impulse_analytical_curve[index])).ToList();
 
             // ########################### Frequency Domain #############################################################
 
@@ -58,9 +61,29 @@ namespace RungeKutta
             // ########################### Display Results ##############################################################
 
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
+               outputDirCurveChart: "RungeKutta",
+               fileNameWithoutExtention: "RungeKuttaImpulse",
+               headerCaption: "HarmonicOsziallor Output(Impulse)",
+               grid1: null,
+               grid2: t,
+               curve1: null,
+               curve2: y_rk_impulse,
+               linearFreqAxis: true);
+
+            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
+               outputDirCurveChart: "RungeKutta",
+               fileNameWithoutExtention: "RungeKutta_Delta_Impulse",
+               headerCaption: "HarmonicOsziallor delta to analytical solution (Impulse)",
+               grid1: null,
+               grid2: t,
+               curve1: null,
+               curve2: delta_impulse,
+               linearFreqAxis: true);
+
+            DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
                 outputDirCurveChart: "RungeKutta",
-                fileNameWithoutExtention: "RungeKutta",
-                headerCaption: "HarmonicOsziallor Input and Output",
+                fileNameWithoutExtention: "RungeKuttaStep",
+                headerCaption: "HarmonicOsziallor Input(Step) and Output",
                 grid1: t,
                 grid2: t,
                 curve1: y_rk,
@@ -69,12 +92,12 @@ namespace RungeKutta
 
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
                outputDirCurveChart: "RungeKutta",
-               fileNameWithoutExtention: "RungeKutta_Delta",
-               headerCaption: "HarmonicOsziallor delta to analytical solution",
+               fileNameWithoutExtention: "RungeKutta_Delta_Step",
+               headerCaption: "HarmonicOsziallor delta to analytical solution (Step)",
                grid1: null,
                grid2: t,
                curve1: null,
-               curve2: delta,
+               curve2: delta_step,
                linearFreqAxis: true);
 
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
@@ -86,6 +109,8 @@ namespace RungeKutta
                curve1: null,
                curve2: output,
                linearFreqAxis: false);
+
+            DisplayResults.CloseInternetExplorer();
         }
 
         private static void FFT()
