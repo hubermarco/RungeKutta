@@ -11,6 +11,12 @@ namespace RungeKutta
     {
         static void Main(string[] args)
         {
+            // Simulation of a damped harmonic oscillator:
+            // y'' + 2*D*y' + w0^2*y = u(t)
+            // y'' + a*y' + b*y = u(t)
+
+            // ###########################  Preparation of Inputs ##############################################
+
             var T0 = 0.01; // in seconds
             var f0 = 1 / T0;
             var Tend = 50; // in seconds
@@ -22,14 +28,9 @@ namespace RungeKutta
             var b = Math.Pow(w0, 2.0);
 
             Func<double, double> inputFunction = InputFunctions.Step;
-
             var u = t.Select(time => inputFunction(time)).ToList();
 
-            var y_rungekutta = RungeKutta4.Apply(
-                Models.HarmonicOscillator,
-                y0: new List<double> { 0, 0 }, t, a, b, inputFunction);
-
-            var y_rk = (IList<double>)y_rungekutta.Select(x => x[0]).ToList();
+            // ########################### Analytical Results #########################################################
 
             double y_impulse_analytical(double time) => 1.0327955589886 * Math.Exp(-time / 4) * Math.Sin(0.96824583655185 * time);
 
@@ -39,14 +40,27 @@ namespace RungeKutta
             var y_impulse_analytical_curve = t.Select(y_impulse_analytical).ToList();
             var y_step_analytical_curve = t.Select(y_step_analytical).ToList();
 
+            // ########################### Time Domain ###############################################################
+
+            var y_rungekutta = RungeKutta4.Apply(
+                Models.HarmonicOscillator,
+                y0: new List<double> { 0, 0 }, t, a, b, inputFunction);
+
+            var y_rk = y_rungekutta.Select(x => x[0]).ToList();
+
+           
             var delta = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
-            var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < x) && (index <= t.Count / 2))).ToList();
+            // ########################### Frequency Domain #############################################################
+
+            var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
             var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
             var output = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
 
             FFT();
+
+            // ########################### Display Results ##############################################################
 
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
                 outputDirCurveChart: "RungeKutta",
