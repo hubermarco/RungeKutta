@@ -15,7 +15,8 @@ namespace RungeKutta
            IList<double> u,
            IList<double> delta_step,
            IList<double> freq,
-           IList<double> frequencyResponse
+           IList<double> frequencyResponse,
+           List<double> frequencyResponse_analytical
            )
         {
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
@@ -57,9 +58,11 @@ namespace RungeKutta
             DisplayResults.CreateCurveChartAndShowItWithInternetExplorer(
                outputDirCurveChart: "RungeKutta",
                fileNameWithoutExtention: "FFT",
-               headerCaption: "HarmonicOsziallor FFT of output",
-               grid: freq,
-               curve: frequencyResponse,
+               headerCaption: "HarmonicOsziallor FFT (red=analytical, black=H(jw))",
+               grid1: freq,
+               grid2: freq,
+               curve1: frequencyResponse_analytical,
+               curve2: frequencyResponse,
                linearFreqAxis: false);
 
             DisplayResults.CloseInternetExplorer();

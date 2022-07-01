@@ -20,6 +20,7 @@ namespace RungeKutta
             var f0 = 1 / T0;
             var Tend = 50; // in seconds
             var t = Np.Arange(0, Tend, T0);
+            var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
 
             var D = 0.25;
             var w0 = 1;
@@ -29,12 +30,11 @@ namespace RungeKutta
             Func<double, double> inputFunction = InputFunctions.Step;
             var u = t.Select(time => inputFunction(time)).ToList();
 
-            // ########################### Analytical Results #########################################################
+            // ########################### Time Domain ###############################################################
 
+            // Analytical results
             var y_impulse_analytical_curve = t.Select(AnalyticalResults.Y_impulse).ToList();
             var y_step_analytical_curve = t.Select(AnalyticalResults.Y_step).ToList();
-
-            // ########################### Time Domain ###############################################################
 
             var y_rungekutta = RungeKutta4.Apply(
                 Models.HarmonicOscillator,
@@ -49,10 +49,14 @@ namespace RungeKutta
             var delta_impulse = y_rk_impulse.Select((value_rk, index) => (value_rk - y_impulse_analytical_curve[index])).ToList();
 
             var y_rk_step_integrated = DiscreteCalculus.Integrate(y_rk_impulse, T0);
-       
+
             // ########################### Frequency Domain #############################################################
 
-            var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
+            // Analytical results
+            var j = new Complex(0, 1);
+            Complex H_jw(double w) => 1 / (Complex.Pow(j*w, 2) + a*(j*w) + b);
+            var frequencyResponse_analytical = freq.Select(f => H_jw(2 * Math.PI * f).Magnitude).ToList();
+
             var input = y_rk_impulse.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
             var frequencyResponse = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
@@ -69,7 +73,8 @@ namespace RungeKutta
                 y_rk_step, 
                 u, 
                 delta_step, 
-                freq, 
+                freq,
+                frequencyResponse_analytical,
                 frequencyResponse);
         }
     }
