@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisplayResults.cs" />
     <Compile Include="DoubleVector.cs" />
     <Compile Include="InputFunctions.cs" />
     <Compile Include="Models.cs" />

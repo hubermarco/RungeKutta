@@ -1,4 +1,5 @@
-﻿using MathNet.Numerics.IntegralTransforms;
+﻿using CurveChartImageCreator;
+using MathNet.Numerics.IntegralTransforms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

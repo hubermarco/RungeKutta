@@ -6,13 +6,13 @@ namespace CurveChartImageCreator
     public class ScaledCurveChartImageApi
     {
         public static void Create(
+            string outputDirCurveChart,
             string fileNameWithoutExtention,
             string headerCaption,
             IList<double> grid1,
             IList<double> grid2,
             IList<double> curve1,
             IList<double> curve2,
-            string outputDirCurveChart,
             bool linearFreqAxis,
             uint imageWidth = 900,
             uint imageHeight = 600)
@@ -41,13 +41,13 @@ namespace CurveChartImageCreator
                 scalingExponent: ref scalingExponent);
 
             CurveChartImageApi.Create(
+                 outputDir: outputDirCurveChart,
                 fileNameWithoutExtention: fileNameWithoutExtention,
                 headerCaption: $"{headerCaption}, ScalingFactor=10^({scalingExponent})",
                 xGrid1: usedGrid1,
                 xGrid2: usedGrid2,
                 curveList1: new List<IList<double>> { scaledCurve1 },
                 curveList2: new List<IList<double>> { scaledCurve2 },
-                outputDir: outputDirCurveChart,
                 linearFreqAxis: linearFreqAxis,
                 imageWidth: imageWidth,
                 imageHeight: imageHeight);

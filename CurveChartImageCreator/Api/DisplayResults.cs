@@ -1,10 +1,9 @@
-﻿using CurveChartImageCreator;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace RungeKutta
+namespace CurveChartImageCreator
 {
     public class DisplayResults
     {
@@ -16,7 +15,9 @@ namespace RungeKutta
             IList<double> curve1,
             IList<double> grid2,
             IList<double> curve2,
-            bool linearFreqAxis)
+            bool linearFreqAxis,
+            uint imageWidth = 600,
+            uint imageHeight = 450)
         {
             ScaledCurveChartImageApi.Create(
                 fileNameWithoutExtention: fileNameWithoutExtention,
@@ -27,13 +28,23 @@ namespace RungeKutta
                 curve2: curve2,
                 outputDirCurveChart: outputDirCurveChart,
                 linearFreqAxis: linearFreqAxis,
-                imageWidth: 600,
-                imageHeight: 450);
+                imageWidth: imageWidth,
+                imageHeight: imageHeight);
 
             StartInternetExplorerwithPngFile(outputDirCurveChart, fileNameWithoutExtention);
 
             Console.Write("Press any key");
             Console.ReadKey(true);
+        }
+
+        public static void CloseInternetExplorer()
+        {
+            Process[] ps = Process.GetProcessesByName("IEXPLORE");
+
+            foreach (Process p in ps)
+            {
+                p.Kill();
+            }
         }
 
         private static void StartInternetExplorerwithPngFile(string outputFolderName, string fileNameWithoutExtention)
@@ -42,16 +53,6 @@ namespace RungeKutta
             var outputDir = Path.Combine(currentDirectory, outputFolderName);
             var filePath = Path.Combine(outputDir, fileNameWithoutExtention + ".png");
             Process.Start("IExplore.exe", filePath);
-        }
-
-        private static void CloseInternetExplorer()
-        {
-            Process[] ps = Process.GetProcessesByName("IEXPLORE");
-
-            foreach (Process p in ps)
-            {
-                p.Kill();
-            }
         }
     }
 }
