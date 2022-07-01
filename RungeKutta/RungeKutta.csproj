@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticalResults.cs" />
+    <Compile Include="DiscreteCalculus.cs" />
     <Compile Include="DoubleVector.cs" />
     <Compile Include="FFT_test.cs" />
     <Compile Include="InputFunctions.cs" />

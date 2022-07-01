@@ -41,13 +41,15 @@ namespace RungeKutta
                 y0: new List<double> { 0, 0 }, t, a, b, inputFunction);
 
             // Step response
-            var y_rk = y_rungekutta.Select(x => x[0]).ToList();
-            var delta_step = y_rk.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
+            var y_rk_step = y_rungekutta.Select(x => x[0]).ToList();
+            var delta_step = y_rk_step.Select((value_rk, index) => (value_rk - y_step_analytical_curve[index])).ToList();
 
             // Impulse response (differentiate y_rk to calculate impulse response)
-            var y_rk_impulse = y_rk.Select((value, index) => (index == 0) ? 0 : (value - y_rk[index - 1]) / T0).ToList();
+            var y_rk_impulse = DiscreteCalculus.Differentiate(y_rk_step,T0);
             var delta_impulse = y_rk_impulse.Select((value_rk, index) => (value_rk - y_impulse_analytical_curve[index])).ToList();
 
+            var y_rk_step_integrated = DiscreteCalculus.Integrate(y_rk_impulse, T0);
+       
             // ########################### Frequency Domain #############################################################
 
             var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < index) && (index <= t.Count / 2))).ToList();
@@ -64,7 +66,7 @@ namespace RungeKutta
                 y_impulse_analytical_curve, 
                 y_rk_impulse, 
                 delta_impulse, 
-                y_rk, 
+                y_rk_step, 
                 u, 
                 delta_step, 
                 freq, 
