@@ -47,10 +47,20 @@ namespace CurveChartImageCreator
             }
         }
 
-        private static void StartInternetExplorerwithPngFile(string outputFolderName, string fileNameWithoutExtention)
+        private static void StartInternetExplorerwithPngFile(string outputDirCurveChart, string fileNameWithoutExtention)
         {
-            var currentDirectory = Environment.CurrentDirectory;
-            var outputDir = Path.Combine(currentDirectory, outputFolderName);
+            string outputDir;
+
+            if( outputDirCurveChart.Contains("\\") || outputDirCurveChart.Contains("/") )
+            {
+                outputDir = outputDirCurveChart;
+            }
+            else
+            {
+                var currentDirectory = Environment.CurrentDirectory;
+                outputDir = Path.Combine(currentDirectory, outputDirCurveChart);
+            }
+
             var filePath = Path.Combine(outputDir, fileNameWithoutExtention + ".png");
             Process.Start("IExplore.exe", filePath);
         }
