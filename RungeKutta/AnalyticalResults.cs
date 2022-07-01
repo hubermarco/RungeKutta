@@ -39,7 +39,7 @@ namespace RungeKutta
         // y(t)=(exp(-D*t)*(1/wr*exp(j*wr*t)-1/wr*exp(-j*wr*t)))/(2*j)
         // y(t)=(exp(-D*t)*(1/wr*sin(wr*t))
         // y(t)=(exp(-0.25*t)*(1.0327955589886*sin(0.96824583655185*t))
-        public static double y_impulse(double time) => 1.0327955589886 * Math.Exp(-time / 4) * Math.Sin(0.96824583655185 * time);
+        public static double Y_impulse(double time) => 1.0327955589886 * Math.Exp(-time / 4) * Math.Sin(0.96824583655185 * time);
 
         // ***************************************************************
         // Step response calculated with integration of impulse response
@@ -48,7 +48,7 @@ namespace RungeKutta
         // ystep = -(0.778891^t*cos(0.9682*t)-0.258223*0.778891^t*sin(0.9682*t) + C
         // ystep(t=0)=0 => C=1
         // ystep = 1-(0.778891^t*cos(0.9682*t)-0.258223*0.778891^t*sin(0.9682*t)
-        public static double y_step(double time) => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
+        public static double Y_step(double time) => 1 - Math.Pow(0.77880078307141, time) * Math.Cos(0.96824583655185 * time) -
             0.258198888974715 * Math.Pow(0.77880078307141, time) * Math.Sin(0.96824583655185 * time);
     }
 }

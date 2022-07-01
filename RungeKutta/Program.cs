@@ -32,8 +32,8 @@ namespace RungeKutta
 
             // ########################### Analytical Results #########################################################
 
-            var y_impulse_analytical_curve = t.Select(AnalyticalResults.y_impulse).ToList();
-            var y_step_analytical_curve = t.Select(AnalyticalResults.y_step).ToList();
+            var y_impulse_analytical_curve = t.Select(AnalyticalResults.Y_impulse).ToList();
+            var y_step_analytical_curve = t.Select(AnalyticalResults.Y_step).ToList();
 
             // ########################### Time Domain ###############################################################
 
