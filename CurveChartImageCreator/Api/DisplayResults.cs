@@ -8,6 +8,35 @@ namespace CurveChartImageCreator
     public class DisplayResults
     {
         public static void CreateCurveChartAndShowItWithInternetExplorer(
+          string outputDirCurveChart,
+          string fileNameWithoutExtention,
+          string headerCaption,
+          IList<double> grid,
+          IList<double> curve,
+          bool linearFreqAxis,
+          uint imageWidth = 600,
+          uint imageHeight = 450)
+        {
+            ScaledCurveChartImageApi.Create(
+                fileNameWithoutExtention: fileNameWithoutExtention,
+                headerCaption: headerCaption,
+                grid1: null,
+                grid2: grid,
+                curve1: null,
+                curve2: curve,
+                outputDirCurveChart: outputDirCurveChart,
+                linearFreqAxis: linearFreqAxis,
+                imageWidth: imageWidth,
+                imageHeight: imageHeight);
+
+            StartInternetExplorerwithPngFile(outputDirCurveChart, fileNameWithoutExtention);
+
+            Console.Write("Press any key");
+            Console.ReadKey(true);
+        }
+
+
+        public static void CreateCurveChartAndShowItWithInternetExplorer(
             string outputDirCurveChart,
             string fileNameWithoutExtention,
             string headerCaption,
