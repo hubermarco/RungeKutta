@@ -43,7 +43,7 @@ namespace RungeKutta
             var freq = Np.Linspace(0, f0, t.Count).Where((x, index) => ((0 < x) && (index <= t.Count / 2))).ToList();
             var input = y_impulse_analytical_curve.Select(x => new Complex(x, 0)).ToArray();
             Fourier.Forward(input, FourierOptions.NoScaling);
-            var output = input.Select(x => x.Magnitude * T0).Where((x, index) => index <= input.Length / 2 - 1).ToList();
+            var output = input.Select(x => x.Magnitude * T0).Where((x, index) => ((0 < index) && (index <= input.Length / 2))).ToList();
 
             FFT();
 
