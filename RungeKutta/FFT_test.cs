@@ -10,11 +10,11 @@ namespace RungeKutta
         public static void FFT()
         {
             var T = 1; // period duration in seconds
-            var fs = 100; // sample frequency in Hz
-            var ts = 1.0 / fs; // sample time in seconds
+            var f0 = 100; // sample frequency in Hz
+            var T0 = 1.0 / f0; // sample time in seconds
 
             // discret time samples in seconds
-            var t_discrete = Np.Arange(0, T, ts);
+            var t_discrete = Np.Arange(0, T, T0);
 
             var f = 2;
 
@@ -23,10 +23,13 @@ namespace RungeKutta
             var inputComplex = xd.Select(x => new Complex(x, 0)).ToArray();
 
             var Xd = inputComplex.Select(x => x).ToArray();
-
             Fourier.Forward(Xd, FourierOptions.NoScaling);
+            var Xd_Abs = Xd.Select(x => x.Magnitude * T0).ToArray();
 
-            var Xd_Abs = Xd.Select(x => x.Magnitude * ts).ToArray();
+            var Xd2 = DiscreteCalculus.DFT(xd);
+            var Xd_Abs2 = Xd2.Select(x => x.Magnitude * T0).ToArray();
+
+            var deltaMax = Xd_Abs.Select((value, index) => Math.Abs(Xd_Abs2[index] - value)).Max();
         }
     }
 }

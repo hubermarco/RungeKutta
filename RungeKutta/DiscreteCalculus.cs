@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace RungeKutta
 {
@@ -17,6 +19,19 @@ namespace RungeKutta
                 y_1 = y_0;
                 return y_0;
             }).ToList();
-        }  
+        }
+
+        public static IList<Complex> DFT(IList<double> x)
+        {
+            var j = new Complex(0, 1);
+            var N = x.Count;
+            var X = Enumerable.Repeat(new Complex(0, 0), N).ToList();
+
+            for (var n = 0; n < N; n++)
+                for (var k = 0; k < N; k++)
+                    X[n] += x[k] * Complex.Exp(-j * 2 * Math.PI * (n * 1.0 / N) * k);
+
+            return X;
+        }
     }
 }
