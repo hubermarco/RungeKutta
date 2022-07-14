@@ -7,7 +7,7 @@ namespace RungeKutta
 {
     public class DiscreteCalculus
     {
-        public static IList<double> Differentiate(IList<double> input, double T0 ) =>
+        public static IList<double> Differentiate(IList<double> input, double T0) =>
             input.Select((value, index) => (index == 0) ? 0 : (value - input[index - 1]) / T0).ToList();
 
         public static IList<double> Integrate(IList<double> input, double T0)
