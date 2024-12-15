@@ -25,13 +25,13 @@ namespace RungeKutta
         {
             var j = new Complex(0, 1);
             var N = x.Length;
-            var X = Enumerable.Repeat(new Complex(0, 0), N).ToList();
+            var X = Enumerable.Repeat(new Complex(0, 0), N).ToArray();
 
             for (var n = 0; n < N; n++)
                 for (var k = 0; k < N; k++)
                     X[n] += x[k] * Complex.Exp(-j * 2 * Math.PI * (n * 1.0 / N) * k);
 
-            return X.ToArray();
+            return X;
         }
     }
 }
