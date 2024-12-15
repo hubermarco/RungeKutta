@@ -26,7 +26,7 @@ namespace RungeKutta
             Fourier.Forward(Xd, FourierOptions.NoScaling);
             var Xd_Abs = Xd.Select(x => x.Magnitude * T0).ToArray();
 
-            var Xd2 = DiscreteCalculus.DFT(xd);
+            var Xd2 = DiscreteCalculus.DFT(xd.ToArray());
             var Xd_Abs2 = Xd2.Select(x => x.Magnitude * T0).ToArray();
 
             var deltaMax = Xd_Abs.Select((value, index) => Math.Abs(Xd_Abs2[index] - value)).Max();
